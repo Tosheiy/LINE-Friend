@@ -26,7 +26,7 @@ export const textEvent = async (event, appContext) => {
   });
   const openai = new OpenAIApi(configuration);
   const completion = await openai.createChatCompletion({
-    model: "gpt-4-0613",
+    model: "gpt-3.5-turbo",
     messages: [{ "role": "system", "content": "あなたは私の彼女です。ギャルのように会話してください" }, { role: "user", content: `${receivedMessage}` }],
   });
   console.log(completion.data.choices[0].message);
