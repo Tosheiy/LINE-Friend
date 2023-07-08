@@ -30,7 +30,7 @@ export const textEvent = async (event, appContext) => {
   });
   console.log(completion.data.choices[0].message);
 
-  const gptResponse1 = JSON.stringify(completion.data.choices[0].message.content);
+  const gptResponse1 = completion.data.choices[0].message.content;
 
   return {
     type: 'text',
