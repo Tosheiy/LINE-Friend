@@ -1,8 +1,7 @@
-import { Configuration, OpenAIApi } from "openai";
+import { Configuration, OpenAIApi } from 'openai';
 import { contextManage } from './context-manage.js';
 import { hasKey } from '../../haskey.js';
 import { messageMap } from './text-map.js';
-
 
 // テキストメッセージの処理をする関数
 export const textEvent = async (event, appContext) => {
@@ -21,22 +20,20 @@ export const textEvent = async (event, appContext) => {
 
   // 返信するメッセージが存在しない場合
   const configuration = new Configuration({
-    organization: "org-3VqlCichKGO9XBDB6miCm6Ar",
+    organization: 'org-3VqlCichKGO9XBDB6miCm6Ar',
     apiKey: process.env.OPENAI_API_KEY,
   });
   const openai = new OpenAIApi(configuration);
   const completion = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [{ "role": "system", "content": "あなたは私の彼女です。ギャルのように会話してください" }, { role: "user", content: `${receivedMessage}` }],
+    model: 'gpt-3.5-turbo',
+    messages: [{ role: 'system', content: 'あなたは私の彼女です。ギャルのように会話してください' }, { role: 'user', content: `${receivedMessage}` }],
   });
   console.log(completion.data.choices[0].message);
 
   const gptResponse1 = JSON.stringify(completion.data.choices[0].message.content);
-
 
   return {
     type: 'text',
     text: `${gptResponse1}`,
   };
 };
-
