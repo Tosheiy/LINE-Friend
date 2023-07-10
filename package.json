@@ -15,7 +15,8 @@
     "aws-sdk": "^2.1187.0",
     "axios": "^0.27.2",
     "dotenv": "^16.0.1",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "openai": "^3.3.0"
   },
   "devDependencies": {
     "eslint": "^8.21.0",
