@@ -28,7 +28,7 @@ export const messageHandler = (event, appContext) => {
   if (!hasKey(eventHandlers, event.message.type)) {
     return {
       type: 'text',
-      text: 'そのイベントには対応していません...',
+      text: `受け取ったメッセージ: ${receivedMessage}\nそのメッセージの返信には対応してません...`,
     };
   }
 
