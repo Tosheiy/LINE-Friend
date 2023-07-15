@@ -9,6 +9,7 @@ import 'dotenv/config';
 import { webhook } from './webhook.js';
 import { log } from '../log.js';
 
+
 const config = {
   channelSecret: process.env.CHANNEL_SECRET,
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
@@ -16,7 +17,9 @@ const config = {
 
 
 
+
 const PORT = process.env.PORT || 3000;
+
 const app = express();
 
 // /にアクセスがあった時、Deploy succeededと返す

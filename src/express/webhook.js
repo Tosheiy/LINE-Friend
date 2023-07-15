@@ -12,10 +12,12 @@ import 'dotenv/config';
 const { CHANNEL_ACCESS_TOKEN } = process.env;
 
 
+
 // bot-sdkのクライアントを作成
 const lineClient = new line.Client({
   channelAccessToken: CHANNEL_ACCESS_TOKEN,
 });
+
 
 export const webhook = (req, res) => {
   // 受け取ったイベントの中身を出力
