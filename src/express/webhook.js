@@ -19,17 +19,8 @@ const lineClient = new line.Client({
 
 export const webhook = (req, res) => {
   // 受け取ったイベントの中身を出力
-  //log(req.body.events);
   console.log(req.body.events[0].message.text);
-  //const lineMes = req.body.events[0].message.text;
 
-  /*async function handleEvent(event) {
-    if (event.type !== 'message' || event.message.type !== 'text') {
-      return Promise.resolve(null);
-    }
-
-
-  }*/
 
   // リクエストボディからイベントを取り出し
   const { events } = req.body;
@@ -62,8 +53,5 @@ export const webhook = (req, res) => {
       error(`返信処理でエラーが発生しました: ${err}`);
     });
   return res.json('ok');
-  /*Promise
-    .all(req.body.events.map(handleEvent))
-    .then((result) => res.json(result));*/
 
 };

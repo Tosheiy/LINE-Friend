@@ -1,66 +1,36 @@
-import {
-    PutCommand,
-    QueryCommand,
-} from "@aws-sdk/lib-dynamodb";
-import { v4 as uuidv4 } from "uuid";
 const { TABLE_NAME } = process.env;
 
 // データ作成
-export const createData = (userMessageContent, userId, dataType, nanoSecondFormat, appContext) => {
+export const createData = (userId, dataType, data, appContext) => {
     // パラメータを作成
-    const param = new PutCommand({
+    const param = {
         TableName: TABLE_NAME,
         Item: {
-            id: uuidv4(),
-            content: userMessageContent,
-            userId: userId,
+            ID: userId,
             DataType: dataType,
-            typedAt: dayjs().format(nanoSecondFormat),
-            role: "user",
+            Data: data,
         },
-    });
+    };
 
     // DynamoDBへデータを保存
     return appContext.dynamoDBContext.put(param);
 };
 
-export const anotherData = (chatGptMessageContent, userId, dataType, nanoSecondFormat, appContext) => {
-    const param = new PutCommand({
-        TableName: TABLE_NAME,
-        Item: {
-            id: uuidv4(),
-            content: chatGptMessageContent,
-            userId: userId,
-            DataType: dataType,
-            typedAt: dayjs().format(nanoSecondFormat),
-            role: "assistant",
-        },
-    })
-    return appContext.dynamoDBContext.put(param);
-};
-
 // データ取得
-export const readData = (userId, DataType, appContext) => {
+export const readData = (userId, dataType, appContext) => {
     // パラメータを作成
-    const param = new QueryCommand({
+    const param = {
         TableName: TABLE_NAME,
-        IndexName: "userIdIndex",
-        KeyConditionExpression: "#userId = :userId and #DataType = :DataType",
-        ExpressionAttributeNames: {
-            "#userId": "userId",
-            "#DataType": "DataType"
-        },
         ExpressionAttributeValues: {
-            ":userId": userId,
-            ":DataType": DataType,
+            ':u': userId,
+            ':d': dataType,
         },
-    });
+        KeyConditionExpression: 'ID = :u and DataType = :d',
+    };
 
     // DynamoDBからデータを取得
     return appContext.dynamoDBContext.query(param);
 };
-
-
 
 // データ更新
 export const updateData = (userId, dataType, data, appContext) => {

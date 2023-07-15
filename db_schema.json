@@ -1,5 +1,5 @@
 {
-    "TableName": "TEST",
+    "TableName": "HandsOnLineBot",
     "KeySchema": [
         {
             "AttributeName": "ID",
