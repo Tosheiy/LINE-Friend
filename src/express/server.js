@@ -1,7 +1,9 @@
 // モジュールの読み込み
 import express from 'express';
 import { middleware } from '@line/bot-sdk';
+
 import 'dotenv/config';
+
 
 // ファイルの読み込み
 import { webhook } from './webhook.js';

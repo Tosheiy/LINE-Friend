@@ -5,6 +5,7 @@ import 'dotenv/config';
 import { createData, readData, deleteData } from "../../crud.js";
 import { Configuration, OpenAIApi } from "openai";
 
+
 // テキストメッセージの処理をする関数
 export const textEvent = async (event, appContext) => {
   // contextが存在した場合は対応するメッセージが返ってきて、存在しない場合はundefinedが帰ってくる
@@ -14,11 +15,11 @@ export const textEvent = async (event, appContext) => {
   }
   // ユーザーから送られてきたメッセージ
   const receivedMessage = event.message.text;
-
   // 送られてきたメッセージに応じて返信するメッセージを取得してreturn
   if (hasKey(messageMap, receivedMessage)) {
     return messageMap[receivedMessage](event, appContext);
   }
+
 
   // 返信するメッセージが存在しない場合
 
@@ -61,10 +62,12 @@ export const textEvent = async (event, appContext) => {
   });
   const openai = new OpenAIApi(configuration);
   const systemMessage = {
+
     role: 'system', content: `${await character(event, appContext)}`
   };
 
-  await deleteData(event.source.userId, 'message', appContext);
+  //await deleteData(event.source.userId, 'message', appContext);
+
   let Message = await readData(event.source.userId, 'message', appContext);
   console.log(Message);
   if (Message.Items[0] === undefined) {
@@ -83,19 +86,24 @@ export const textEvent = async (event, appContext) => {
       systemMessage,
 
       ...Message
-    ]
+
+    ],
+    top_p: 0.5,
+    temperature: 0.5,
+
   }
   )
-
 
   const res = completion.data.choices[0].message.content;
 
   Message.push({ role: 'assistant', content: res })
+  Message = Message.slice(-6)
+
   console.log(Message);
   await createData(event.source.userId, 'message', Message, appContext);
 
   return {
     type: 'text',
-    text: res,
+    text: res
   };
 };
