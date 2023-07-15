@@ -6,15 +6,25 @@ import { bot } from '../bot.js';
 import { DynamoDBContext } from '../db.js';
 import { AppContext } from '../app-context.js';
 import { saveContentFileToDownloadDir } from '../save-file.js';
+import 'dotenv/config';
+
 
 const { CHANNEL_ACCESS_TOKEN } = process.env;
 
+
+// bot-sdkのクライアントを作成
+const lineClient = new line.Client({
+  channelAccessToken: CHANNEL_ACCESS_TOKEN,
+});
+
 export const webhook = (req, res) => {
   // 受け取ったイベントの中身を出力
-  log(req.body.events);
+  console.log(req.body.events[0].message.text);
+
 
   // リクエストボディからイベントを取り出し
   const { events } = req.body;
+
 
   // DynamoDB DocumentClientのインスタンスを生成
   const dynamoDocument = new aws.DynamoDB.DocumentClient({
@@ -25,10 +35,6 @@ export const webhook = (req, res) => {
   // DynamoDBのContextを作成
   const dynamoDBContext = new DynamoDBContext(dynamoDocument);
 
-  // bot-sdkのクライアントを作成
-  const lineClient = new line.Client({
-    channelAccessToken: CHANNEL_ACCESS_TOKEN,
-  });
 
   // ファイルのダウンローダーを作成
   const contentFileDownloader = saveContentFileToDownloadDir;
@@ -41,10 +47,11 @@ export const webhook = (req, res) => {
   });
 
   // イベントを処理する関数を呼び出す
-  Promise.all(bot(events, appContext))
+  Promise
+    .all(bot(events, appContext))
     .catch((err) => {
       error(`返信処理でエラーが発生しました: ${err}`);
     });
-
   return res.json('ok');
+
 };
