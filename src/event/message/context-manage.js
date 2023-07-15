@@ -21,7 +21,7 @@ const contextMap = {
 
         return {
             type: 'text',
-            text: `"${event.message.text}"だね。おっけー`,
+            text: `${event.message.text}かー\nここあみたいな人ってことじゃん`,
         };
     },
 
@@ -257,8 +257,6 @@ export const contextManage = async (event, appContext) => {
         return undefined;
     }
     contextData = contextData.Data;
-
-    console.log(contextData.Data);
 
     if (hasKey(contextMap, contextData)) {
         return contextMap[contextData](event, appContext);
