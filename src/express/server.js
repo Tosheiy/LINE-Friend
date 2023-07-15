@@ -7,16 +7,23 @@ import 'dotenv/config';
 import { webhook } from './webhook.js';
 import { log } from '../log.js';
 
+
+const config = {
+  channelSecret: process.env.CHANNEL_SECRET,
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
+};
+
+
+
+
 const PORT = process.env.PORT || 3000;
-const { CHANNEL_SECRET } = process.env;
+
 const app = express();
 
 // /にアクセスがあった時、Deploy succeededと返す
 app.get('/', (_req, res) => { res.send('Deploy succeeded'); });
 // /webhookにアクセスがあったとき、bot.jsのindexを呼び出す
-app.post('/webhook', middleware({
-  channelSecret: CHANNEL_SECRET,
-}), webhook);
+app.post('/webhook', middleware(config), webhook);
 
 app.listen(PORT);
 log(`Server running at ${PORT}`);

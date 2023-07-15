@@ -14,6 +14,17 @@ const contextMap = {
             text: `"${event.message.text}"というメッセージをdbに追加しました`,
         };
     },
+    changecha: async (event, appContext) => {
+        await createData(event.source.userId, 'prompt', event.message.text, appContext);
+
+        await deleteData(event.source.userId, 'context', appContext);
+
+        return {
+            type: 'text',
+            text: `"${event.message.text}"だね。おっけー`,
+        };
+    },
+
     bookSearchMode1: async (event, appContext) => {
         try {
             // ユーザーのコンテキストを削除
@@ -239,10 +250,15 @@ const contextMap = {
 
 export const contextManage = async (event, appContext) => {
     let contextData = (await readData(event.source.userId, 'context', appContext)).Items[0];
+
+
+
     if (!contextData) {
         return undefined;
     }
     contextData = contextData.Data;
+
+    console.log(contextData.Data);
 
     if (hasKey(contextMap, contextData)) {
         return contextMap[contextData](event, appContext);
