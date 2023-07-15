@@ -18,10 +18,6 @@ const lineClient = new line.Client({
 });
 
 export const webhook = (req, res) => {
-  // 受け取ったイベントの中身を出力
-  console.log(req.body.events[0].message.text);
-
-
   // リクエストボディからイベントを取り出し
   const { events } = req.body;
 
